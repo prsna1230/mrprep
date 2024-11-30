@@ -15,6 +15,7 @@
   "author": "Prasannakumar",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "nodemon": "^3.1.7"
   }
