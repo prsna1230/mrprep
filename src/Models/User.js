@@ -71,5 +71,9 @@ const UserSchema = new Schema(
 );
 
 const UserModel = mongoose.model("user", UserSchema);
+const temporaryUserModel = mongoose.model("temporaryUser", UserSchema);
 
-module.exports = UserModel;
+module.exports = {
+  UserModel,
+  temporaryUserModel,
+};

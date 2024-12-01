@@ -1,9 +1,11 @@
 const bcrypt = require("bcrypt");
 const express = require("express");
 const connectDB = require("./database/connectDb");
-const UserModel = require("./Models/User");
+const { temporaryUserModel } = require("./Models/User");
 
 const { userRegistrationApi } = require("./constants/API_ENDPOINTS");
+const { emailVerification } = require("./Utils/emailVerification");
+const { generateOtp } = require("./Middlewares/generateOtp");
 
 require("dotenv").config();
 
@@ -12,26 +14,21 @@ const PORT = process.env.PORT | 4321;
 
 app.use(express.json());
 
-// user registration API
-app.post(userRegistrationApi, async (req, res) => {
+// temporary user registration
+app.post(userRegistrationApi, generateOtp, async (req, res) => {
   try {
-    const user = new UserModel(req.body);
+    const newUser = new temporaryUserModel(req.body);
 
-    const hashedPassword = await bcrypt.hash(user.password, 8);
-    user.password = hashedPassword;
+    const hashedPassword = await bcrypt.hash(req.body.password, 8);
+    newUser.password = hashedPassword;
 
-    // before registration we need to validate whether the email id valid one. [TODO: mrprep-3002]
-    await user
-      .save()
-      .then(() => {
-        res.send("registration successfull");
-      })
-      .catch((err) => {
-        res.send({ message: "Registration failed", error: err.message });
-      });
+    const addedUser = await newUser.save();
+
+    await emailVerification(addedUser.email, addedUser.otp);
+    res.send("OTP send to mail id");
   } catch (err) {
-    res.send({
-      message: "Registration Failed, Something went wrong",
+    res.status(500).send({
+      message: "Registration failed",
       error: err.message,
     });
   }
