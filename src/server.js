@@ -7,7 +7,7 @@ const {
   userRegistrationApi,
   validateOtpApi,
 } = require("./constants/API_ENDPOINTS");
-const { emailVerification } = require("./Utils/emailVerification");
+const { emailVerification } = require("./Utils/sendEmail");
 const { generateOtp } = require("./Middlewares/generateOtp");
 const validateOtp = require("./Middlewares/validateOtp");
 
