@@ -20,6 +20,7 @@ app.post(userRegistrationApi, async (req, res) => {
     const hashedPassword = await bcrypt.hash(user.password, 8);
     user.password = hashedPassword;
 
+    // before registration we need to validate whether the email id valid one. [TODO: mrprep-3002]
     await user
       .save()
       .then(() => {
