@@ -1,11 +1,15 @@
 const bcrypt = require("bcrypt");
 const express = require("express");
 const connectDB = require("./database/connectDb");
-const { temporaryUserModel } = require("./Models/User");
+const { temporaryUserModel, UserModel } = require("./Models/User");
 
-const { userRegistrationApi } = require("./constants/API_ENDPOINTS");
+const {
+  userRegistrationApi,
+  validateOtpApi,
+} = require("./constants/API_ENDPOINTS");
 const { emailVerification } = require("./Utils/emailVerification");
 const { generateOtp } = require("./Middlewares/generateOtp");
+const validateOtp = require("./Middlewares/validateOtp");
 
 require("dotenv").config();
 
@@ -29,6 +33,41 @@ app.post(userRegistrationApi, generateOtp, async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: "Registration failed",
+      error: err.message,
+    });
+  }
+});
+
+// validate otp
+app.post(validateOtpApi, validateOtp, async (req, res) => {
+  try {
+    const {
+      userName,
+      email,
+      password,
+      preparingFor,
+      isEmailVerified,
+      otp,
+      otpExpiration,
+    } = req.validatingUser;
+
+    const validUser = new UserModel({
+      userName,
+      email,
+      password,
+      preparingFor,
+      isEmailVerified,
+      otp,
+      otpExpiration,
+    });
+    const user = await validUser.save();
+
+    res
+      .status(201)
+      .send({ message: "OTP verified and user registered successfully" });
+  } catch (err) {
+    res.status(401).send({
+      message: "user registration failed",
       error: err.message,
     });
   }

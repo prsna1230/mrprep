@@ -60,7 +60,7 @@ const UserSchema = new Schema(
       type: String,
       default: null,
     },
-    otpExpirationNull: {
+    otpExpiration: {
       type: Date,
       default: null,
     },
