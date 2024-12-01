@@ -6,3 +6,5 @@ const result = enteredExam.every((exam) => {
 });
 
 console.log(result);
+
+console.log(Math.floor(Math.random() * 10000));

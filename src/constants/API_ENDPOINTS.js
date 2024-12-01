@@ -1,3 +1,4 @@
 const userRegistrationApi = "/api/register";
+const validateOtpApi = "/api/validateOtp";
 
-module.exports = { userRegistrationApi };
+module.exports = { userRegistrationApi, validateOtpApi };
