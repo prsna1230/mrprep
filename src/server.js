@@ -29,7 +29,7 @@ app.post(userRegistrationApi, generateOtp, async (req, res) => {
     const addedUser = await newUser.save();
 
     await emailVerification(addedUser.email, addedUser.otp);
-    res.send("OTP send to mail id");
+    res.send({ message: "OTP send to mail id" });
   } catch (err) {
     res.status(500).send({
       message: "Registration failed",
