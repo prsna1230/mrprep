@@ -3,7 +3,7 @@ const generateOtp = (req, res, next) => {
   req.body.otp = otp;
 
   const now = new Date();
-  now.setMinutes(now.getMinutes() + 1);
+  now.setMinutes(now.getMinutes() + 10);
 
   req.body.otpExpiration = now;
   next();
