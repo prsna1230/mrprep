@@ -5,7 +5,7 @@ const emailVerification = async (userEmailId, otp) => {
     service: "gmail",
     auth: {
       user: "prasanna12092024@gmail.com",
-      pass: "nadq edvu owvy qxnw",
+      pass: "cmhn jekz tcgm bcfs",
     },
   });
 
